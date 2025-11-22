@@ -177,6 +177,79 @@ def grade_s3(mod: types.ModuleType) -> bool:
     return True
 
 
+# --- wrappers de vérification pour utilisation directe ---
+
+
+def verify_exS1(mod: types.ModuleType | None = None) -> bool:
+    """
+    Vérifie S1 (SimplePoint).
+    Si mod est None, charge le notebook chapitre_4_interactif.
+    """
+    print("=== Vérification Chapitre 4 - Exercice S1 (SimplePoint) ===")
+    if mod is None:
+        try:
+            mod = _load_notebook_as_module(NOTEBOOK_PATH)
+        except Exception as e:  # noqa: BLE001
+            print("Erreur lors du chargement du notebook :", e)
+            return False
+
+    ok = grade_s1(mod)
+    print("Résultat S1 :", "Réussi" if ok else "Échoué")
+    return ok
+
+
+def verify_exS2(mod: types.ModuleType | None = None) -> bool:
+    """
+    Vérifie S2 (Rectangle).
+    """
+    print("=== Vérification Chapitre 4 - Exercice S2 (Rectangle) ===")
+    if mod is None:
+        try:
+            mod = _load_notebook_as_module(NOTEBOOK_PATH)
+        except Exception as e:  # noqa: BLE001
+            print("Erreur lors du chargement du notebook :", e)
+            return False
+
+    ok = grade_s2(mod)
+    print("Résultat S2 :", "Réussi" if ok else "Échoué")
+    return ok
+
+
+def verify_exS3(mod: types.ModuleType | None = None) -> bool:
+    """
+    Vérifie S3 (StackLite).
+    """
+    print("=== Vérification Chapitre 4 - Exercice S3 (StackLite) ===")
+    if mod is None:
+        try:
+            mod = _load_notebook_as_module(NOTEBOOK_PATH)
+        except Exception as e:  # noqa: BLE001
+            print("Erreur lors du chargement du notebook :", e)
+            return False
+
+    ok = grade_s3(mod)
+    print("Résultat S3 :", "Réussi" if ok else "Échoué")
+    return ok
+
+
+def run_grader_for_specific_exercise(exercise_code: str, mod: types.ModuleType | None = None) -> bool:
+    """
+    Dispatcher simple :
+    - 'S1' -> verify_exS1
+    - 'S2' -> verify_exS2
+    - 'S3' -> verify_exS3
+    """
+    if exercise_code == "S1":
+        return verify_exS1(mod)
+    elif exercise_code == "S2":
+        return verify_exS2(mod)
+    elif exercise_code == "S3":
+        return verify_exS3(mod)
+    else:
+        print(f"Exercice {exercise_code!r} non connu dans le grader du chapitre 4.")
+        return False
+
+
 def main() -> None:
     try:
         mod = _load_notebook_as_module(NOTEBOOK_PATH)
